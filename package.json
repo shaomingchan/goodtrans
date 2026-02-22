@@ -110,6 +110,7 @@
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
     "nextjs-toploader": "^3.9.17",
+    "openai": "^6.22.0",
     "overtype": "^1.2.6",
     "postgres": "^3.4.7",
     "react": "19.2.1",
