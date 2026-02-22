@@ -20,18 +20,11 @@ const LANGUAGES = [
   { code: 'pt', name: 'Português' },
 ];
 
-const MODELS = [
-  { id: 'claude', name: 'Claude 3.5 Sonnet', description: 'Highest quality, slower' },
-  { id: 'qwen3.5-plus', name: 'Qwen3.5 Plus', description: 'Fast, 1M context' },
-  { id: 'qwen3-coder-plus', name: 'Qwen3 Coder Plus', description: 'Best for code/tech docs' },
-];
-
 export default function TranslatePage() {
   const [sourceText, setSourceText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [sourceLang, setSourceLang] = useState('en');
   const [targetLang, setTargetLang] = useState('zh');
-  const [model, setModel] = useState('claude');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [charCount, setCharCount] = useState(0);
@@ -50,7 +43,6 @@ export default function TranslatePage() {
           sourceLanguage: sourceLang,
           targetLanguage: targetLang,
           format: 'markdown',
-          model,
         }),
       });
 
@@ -105,7 +97,7 @@ export default function TranslatePage() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-4xl font-bold text-gray-900">GoodTrans</h1>
-          <p className="text-lg text-gray-600">Professional Translation Powered by AI</p>
+          <p className="text-lg text-gray-600">Professional Translation Powered by Claude AI</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -189,32 +181,6 @@ export default function TranslatePage() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Model Selection */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Translation Engine</CardTitle>
-            <CardDescription>Choose the AI model for translation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 md:grid-cols-3">
-              {MODELS.map((m) => (
-                <button
-                  key={m.id}
-                  onClick={() => setModel(m.id)}
-                  className={`rounded-lg border-2 p-4 text-left transition-all ${
-                    model === m.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
-                  }`}
-                >
-                  <div className="font-semibold text-gray-900">{m.name}</div>
-                  <div className="text-sm text-gray-600">{m.description}</div>
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Translate Button */}
         <div className="mt-6 text-center">
