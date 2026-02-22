@@ -57,7 +57,7 @@ Provide only the translated text without any additional commentary.`,
       targetLanguage,
       charCount,
       format,
-      estimatedCost: (charCount * 0.00000072).toFixed(6), // $0.72 per million chars
+      estimatedCost: (charCount * 0.00005).toFixed(6), // $0.05 per word
     });
   } catch (error) {
     console.error('Translation error:', error);

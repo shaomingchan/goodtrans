@@ -23,38 +23,60 @@ const PRICING_PLANS = {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { planType, email } = body;
+    const { packageType, email } = body;
 
-    if (!planType || !['monthly', 'annual'].includes(planType)) {
+    if (!packageType || !['pay-as-you-go', '10k-words', '100k-words'].includes(packageType)) {
       return NextResponse.json(
-        { error: 'Invalid plan type' },
+        { error: 'Invalid package type' },
         { status: 400 }
       );
     }
 
-    const plan = PRICING_PLANS[planType as keyof typeof PRICING_PLANS];
+    const packages = {
+      'pay-as-you-go': {
+        name: 'Pay as you go',
+        description: '$0.05 per word',
+        amount: 0, // No upfront charge
+      },
+      '10k-words': {
+        name: '10K Words Package',
+        description: '10,000 words for $399',
+        amount: 39900, // $399.00
+      },
+      '100k-words': {
+        name: '100K Words Package',
+        description: '100,000 words for $1,999',
+        amount: 199900, // $1,999.00
+      },
+    };
 
-    // Create checkout session
+    const pkg = packages[packageType as keyof typeof packages];
+
+    // For pay-as-you-go, no checkout needed
+    if (packageType === 'pay-as-you-go') {
+      return NextResponse.json({
+        success: true,
+        message: 'Ready to translate. Charges will be applied per word at $0.05/word',
+      });
+    }
+
+    // Create checkout session for packages
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
-            currency: plan.currency,
+            currency: 'usd',
             product_data: {
-              name: plan.name,
-              description: `GoodTrans ${plan.name}`,
+              name: pkg.name,
+              description: pkg.description,
             },
-            unit_amount: plan.amount,
-            recurring:
-              planType === 'monthly'
-                ? { interval: 'month' }
-                : { interval: 'year' },
+            unit_amount: pkg.amount,
           },
           quantity: 1,
         },
       ],
-      mode: 'subscription',
+      mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
       customer_email: email,
