@@ -1,8 +1,7 @@
 node_modules/
 .next/
-.env.development
-.env.production
-.env.local
+.env*
+!.env.example
 dist/
 build/
 .DS_Store

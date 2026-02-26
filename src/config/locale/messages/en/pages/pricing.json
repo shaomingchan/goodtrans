@@ -1,113 +1,66 @@
 {
   "metadata": {
     "title": "Pricing",
-    "description": "Professional AI Translation at $0.05 per word"
+    "description": "Picmotion — Turn your photos into cinematic vlogs"
   },
   "page": {
-    "title": "GoodTrans Pricing",
+    "title": "Picmotion Pricing",
     "sections": {
       "pricing": {
         "id": "pricing",
-        "title": "Simple, Transparent Pricing",
-        "description": "Professional AI translation powered by Claude 3.5 Sonnet. Quality ≥ human translation, 10x faster, 50% of the price.",
-        "groups": [
-          {
-            "name": "pay-as-you-go",
-            "title": "Pay as you go"
-          },
-          {
-            "name": "packages",
-            "title": "Packages",
-            "is_featured": true
-          }
-        ],
+        "title": "Simple Pricing",
+        "description": "No subscriptions. Pay only when you create.",
         "items": [
           {
-            "title": "Pay as you go",
-            "description": "Perfect for occasional translations",
+            "title": "Single Vlog",
+            "description": "Perfect for trying Picmotion",
             "features_title": "Includes",
             "features": [
-              "Unlimited translations",
-              "All 50+ languages",
-              "Markdown & PDF export",
-              "Claude 3.5 Sonnet quality",
-              "No commitment required"
+              "1 cinematic portrait vlog",
+              "2-minute AI-generated video",
+              "HD download",
+              "Social media sharing",
+              "No watermark"
             ],
-            "interval": "pay-as-you-go",
-            "amount": 0,
+            "amount": 1990,
             "currency": "USD",
-            "price": "$0.05",
-            "original_price": null,
-            "unit": "per word",
+            "price": "$19.9",
+            "unit": "per vlog",
             "is_featured": false,
-            "tip": "Charged per word. No hidden fees.",
             "button": {
-              "title": "Start Translating",
-              "url": "/translate",
-              "icon": "RiFlashlightFill"
+              "title": "Create My Vlog",
+              "url": "/create",
+              "icon": "Zap"
             },
-            "product_id": "pay-as-you-go",
-            "product_name": "GoodTrans Pay as you go",
-            "group": "pay-as-you-go"
+            "product_id": "single-vlog",
+            "product_name": "Picmotion Single Vlog"
           },
           {
-            "title": "10K Words Package",
-            "description": "Great for small projects",
+            "title": "3-Pack",
+            "description": "Best value — save $10",
+            "label": "Save $10",
             "features_title": "Includes",
             "features": [
-              "10,000 words",
-              "All 50+ languages",
-              "Markdown & PDF export",
-              "Claude 3.5 Sonnet quality",
-              "Valid for 90 days",
-              "$0.0399 per word"
+              "3 cinematic portrait vlogs",
+              "2-minute AI-generated videos",
+              "HD download",
+              "Social media sharing",
+              "No watermark",
+              "Priority processing"
             ],
-            "interval": "package",
-            "amount": 39900,
+            "amount": 4990,
             "currency": "USD",
-            "price": "$399",
-            "original_price": null,
-            "unit": "one-time",
-            "is_featured": false,
-            "tip": "Save 20% vs pay-as-you-go",
-            "button": {
-              "title": "Buy Now",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "10k-words",
-            "product_name": "GoodTrans 10K Words Package",
-            "group": "packages"
-          },
-          {
-            "title": "100K Words Package",
-            "description": "Best value for large projects",
-            "label": "Most Popular",
-            "features_title": "Includes",
-            "features": [
-              "100,000 words",
-              "All 50+ languages",
-              "Markdown & PDF export",
-              "Claude 3.5 Sonnet quality",
-              "Valid for 180 days",
-              "$0.01999 per word"
-            ],
-            "interval": "package",
-            "amount": 199900,
-            "currency": "USD",
-            "price": "$1,999",
-            "original_price": null,
-            "unit": "one-time",
+            "price": "$49.9",
+            "original_price": "$59.7",
+            "unit": "3 vlogs",
             "is_featured": true,
-            "tip": "Save 60% vs pay-as-you-go",
             "button": {
-              "title": "Buy Now",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "Get 3-Pack",
+              "url": "/create",
+              "icon": "Zap"
             },
-            "product_id": "100k-words",
-            "product_name": "GoodTrans 100K Words Package",
-            "group": "packages"
+            "product_id": "3-pack-vlog",
+            "product_name": "Picmotion 3-Pack"
           }
         ]
       }

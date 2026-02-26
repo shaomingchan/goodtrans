@@ -1,113 +1,66 @@
 {
   "metadata": {
     "title": "定价",
-    "description": "专业 AI 翻译，每字 0.05 美元"
+    "description": "Picmotion — 将照片变成电影级 Vlog"
   },
   "page": {
-    "title": "GoodTrans 定价",
+    "title": "Picmotion 定价",
     "sections": {
       "pricing": {
         "id": "pricing",
-        "title": "简单透明的定价",
-        "description": "由 Claude 3.5 Sonnet 驱动的专业 AI 翻译。质量 ≥ 人工翻译，快 10 倍，价格便宜 50%。",
-        "groups": [
-          {
-            "name": "pay-as-you-go",
-            "title": "按需付费"
-          },
-          {
-            "name": "packages",
-            "title": "套餐",
-            "is_featured": true
-          }
-        ],
+        "title": "简单定价",
+        "description": "无需订阅，按次付费。",
         "items": [
           {
-            "title": "按需付费",
-            "description": "适合偶尔翻译的用户",
+            "title": "单次 Vlog",
+            "description": "适合初次体验 Picmotion",
             "features_title": "包含",
             "features": [
-              "无限翻译次数",
-              "50+ 主流语言",
-              "Markdown & PDF 导出",
-              "Claude 3.5 Sonnet 质量",
-              "无承诺，随时取消"
+              "1 支电影级人像 Vlog",
+              "2 分钟 AI 生成视频",
+              "高清下载",
+              "社交媒体分享",
+              "无水印"
             ],
-            "interval": "pay-as-you-go",
-            "amount": 0,
+            "amount": 1990,
             "currency": "USD",
-            "price": "$0.05",
-            "original_price": null,
-            "unit": "每字",
+            "price": "$19.9",
+            "unit": "每支",
             "is_featured": false,
-            "tip": "按字计费，无隐藏费用。",
             "button": {
-              "title": "开始翻译",
-              "url": "/translate",
-              "icon": "RiFlashlightFill"
+              "title": "立即创建",
+              "url": "/create",
+              "icon": "Zap"
             },
-            "product_id": "pay-as-you-go",
-            "product_name": "GoodTrans 按需付费",
-            "group": "pay-as-you-go"
+            "product_id": "single-vlog",
+            "product_name": "Picmotion 单次 Vlog"
           },
           {
-            "title": "1 万字套餐",
-            "description": "适合小型项目",
+            "title": "3 次套餐",
+            "description": "超值之选 — 立省 $10",
+            "label": "省 $10",
             "features_title": "包含",
             "features": [
-              "10,000 字",
-              "50+ 主流语言",
-              "Markdown & PDF 导出",
-              "Claude 3.5 Sonnet 质量",
-              "有效期 90 天",
-              "每字 $0.0399"
+              "3 支电影级人像 Vlog",
+              "2 分钟 AI 生成视频",
+              "高清下载",
+              "社交媒体分享",
+              "无水印",
+              "优先处理"
             ],
-            "interval": "package",
-            "amount": 39900,
+            "amount": 4990,
             "currency": "USD",
-            "price": "$399",
-            "original_price": null,
-            "unit": "一次性",
-            "is_featured": false,
-            "tip": "相比按需便宜 20%",
-            "button": {
-              "title": "立即购买",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "10k-words",
-            "product_name": "GoodTrans 1 万字套餐",
-            "group": "packages"
-          },
-          {
-            "title": "10 万字套餐",
-            "description": "大型项目最佳选择",
-            "label": "最受欢迎",
-            "features_title": "包含",
-            "features": [
-              "100,000 字",
-              "50+ 主流语言",
-              "Markdown & PDF 导出",
-              "Claude 3.5 Sonnet 质量",
-              "有效期 180 天",
-              "每字 $0.01999"
-            ],
-            "interval": "package",
-            "amount": 199900,
-            "currency": "USD",
-            "price": "$1,999",
-            "original_price": null,
-            "unit": "一次性",
+            "price": "$49.9",
+            "original_price": "$59.7",
+            "unit": "3 支",
             "is_featured": true,
-            "tip": "相比按需便宜 60%",
             "button": {
-              "title": "立即购买",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "获取套餐",
+              "url": "/create",
+              "icon": "Zap"
             },
-            "product_id": "100k-words",
-            "product_name": "GoodTrans 10 万字套餐",
-            "group": "packages"
+            "product_id": "3-pack-vlog",
+            "product_name": "Picmotion 3次套餐"
           }
         ]
       }
