@@ -531,3 +531,43 @@ export async function compositeVlog(videoUrls: string[], style: string = "cinema
     await fs.rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 }
+
+// ─── Orchestrate: Full Pipeline ──────────────────────────────────────
+
+export interface OrchestrateOptions {
+  jobId: string;
+  photoUrls: string[];
+  style: string;
+}
+
+export async function orchestrate({ jobId, photoUrls, style }: OrchestrateOptions): Promise<string> {
+  console.log(`[pipeline] orchestrate start jobId=${jobId}, style=${style}, photos=${photoUrls.length}`);
+
+  try {
+    await updateJob(jobId, { status: "processing" });
+
+    // Step 1: Upload photos to RunningHub
+    const rhPhotoNames = await uploadPhotosToRH(photoUrls);
+
+    // Step 2: Generate storyboard
+    const storyboardUrl = await generateStoryboard(rhPhotoNames, style);
+
+    // Step 3: Split storyboard into 9 frames
+    const frameUrls = await splitStoryboard(storyboardUrl);
+
+    // Step 4: Generate videos from frames
+    const videoUrls = await generateVideos(frameUrls, style);
+
+    // Step 5: Composite final vlog with BGM
+    const finalUrl = await compositeVlog(videoUrls, style);
+
+    await updateJob(jobId, { status: "completed", videoUrl: finalUrl, completedAt: new Date() });
+    console.log(`[pipeline] orchestrate done jobId=${jobId}, url=${finalUrl}`);
+    return finalUrl;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[pipeline] orchestrate failed jobId=${jobId}:`, msg);
+    await updateJob(jobId, { status: "failed", errorMessage: msg }).catch(() => {});
+    throw err;
+  }
+}

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Film, Check, Loader2, AlertCircle, RotateCcw } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
 
 type JobStatus = "pending" | "processing" | "completed" | "failed";
 
@@ -123,11 +124,11 @@ export default function ProcessingPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#0f0a1a] via-[#1a1035] to-[#0f0a1a] px-4">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-background via-muted/30 to-background px-4">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-600/10 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-[#FF6B4A]/8 blur-[100px]" />
+        <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-primary/[0.08] blur-[100px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-md">
@@ -140,10 +141,10 @@ export default function ProcessingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mt-8 text-center"
         >
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
             {jobStatus === "failed" ? "Generation Failed" : "Creating your Vlog..."}
           </h1>
-          <p className="mt-2 text-sm text-indigo-200/60">
+          <p className="mt-2 text-sm text-muted-foreground">
             {jobStatus === "failed"
               ? "Something went wrong"
               : "Estimated time: 3–5 minutes"}
@@ -155,13 +156,15 @@ export default function ProcessingPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-center"
+            className="mt-6 rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-center"
           >
-            <AlertCircle className="mx-auto mb-2 size-6 text-red-400" />
-            <p className="text-sm text-red-300">{errorMsg}</p>
+            <AlertCircle className="mx-auto mb-2 size-6 text-destructive" />
+            <p className="text-sm text-destructive/80">{errorMsg}</p>
             <Button
+              variant="secondary"
               onClick={handleRetry}
-              className="mt-4 gap-2 bg-white/10 hover:bg-white/20"
+              className="mt-4 gap-2"
+              aria-label="Retry video generation"
             >
               <RotateCcw className="size-4" />
               Try Again
@@ -176,15 +179,23 @@ export default function ProcessingPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
             className="mt-8"
+            aria-live="polite"
           >
-            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-2 overflow-hidden rounded-full bg-muted"
+              role="progressbar"
+              aria-valuenow={Math.round(progress)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Video generation progress"
+            >
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-[#FF6B4A]"
+                className="h-full rounded-full bg-gradient-to-r from-accent via-accent/70 to-primary"
                 style={{ width: `${progress}%` }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               />
             </div>
-            <p className="mt-2 text-right text-xs text-indigo-200/50">
+            <p className="mt-2 text-right text-xs text-muted-foreground">
               {Math.round(progress)}%
             </p>
           </motion.div>
@@ -230,7 +241,7 @@ function StepItem({
       transition={{ delay: 0.1 * index }}
       className="flex items-center gap-3"
     >
-      <div className="flex size-7 shrink-0 items-center justify-center rounded-full border border-white/10">
+      <div className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border/50">
         <AnimatePresence mode="wait">
           {state === "done" ? (
             <motion.div
@@ -246,12 +257,12 @@ function StepItem({
               key="active"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="flex size-7 items-center justify-center rounded-full bg-indigo-500/20"
+              className="flex size-7 items-center justify-center rounded-full bg-accent/20"
             >
-              <Loader2 className="size-3.5 animate-spin text-indigo-400" />
+              <Loader2 className="size-3.5 animate-spin text-accent" />
             </motion.div>
           ) : (
-            <div className="size-2 rounded-full bg-white/20" />
+            <div className="size-2 rounded-full bg-muted-foreground/30" />
           )}
         </AnimatePresence>
       </div>
@@ -260,8 +271,8 @@ function StepItem({
           state === "done"
             ? "text-sm text-emerald-300/80"
             : state === "active"
-              ? "text-sm font-medium text-white"
-              : "text-sm text-white/30"
+              ? "text-sm font-medium text-foreground"
+              : "text-sm text-muted-foreground/50"
         }
       >
         {label}
@@ -279,11 +290,11 @@ function FilmStripAnimation({ progress }: { progress: number }) {
       animate={{ opacity: 1, scale: 1 }}
       className="flex flex-col items-center"
     >
-      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/40 p-4 backdrop-blur-sm">
+      <div className="relative overflow-hidden rounded-xl border border-border/50 bg-card/40 p-4 backdrop-blur-sm">
         {/* Sprocket holes top */}
         <div className="mb-2 flex justify-between px-1">
           {Array.from({ length: frameCount }).map((_, i) => (
-            <div key={`top-${i}`} className="size-2 rounded-sm bg-white/15" />
+            <div key={`top-${i}`} className="size-2 rounded-sm bg-muted-foreground/20" />
           ))}
         </div>
 
@@ -297,17 +308,11 @@ function FilmStripAnimation({ progress }: { progress: number }) {
             return (
               <motion.div
                 key={i}
-                className="relative h-12 w-10 overflow-hidden rounded-sm sm:h-16 sm:w-12"
-                animate={{
-                  backgroundColor: isLit
-                    ? "rgba(99, 102, 241, 0.3)"
-                    : "rgba(255, 255, 255, 0.05)",
-                  borderColor: isCurrent
-                    ? "rgba(255, 107, 74, 0.6)"
-                    : "rgba(255, 255, 255, 0.1)",
-                }}
-                style={{ border: "1px solid" }}
-                transition={{ duration: 0.4 }}
+                className={cn(
+                  "relative h-12 w-10 overflow-hidden rounded-sm border sm:h-16 sm:w-12 transition-colors duration-400",
+                  isLit ? "bg-accent/30" : "bg-muted-foreground/5",
+                  isCurrent ? "border-primary/60" : "border-border/50"
+                )}
               >
                 {isLit && (
                   <motion.div
@@ -315,12 +320,12 @@ function FilmStripAnimation({ progress }: { progress: number }) {
                     animate={{ opacity: 1 }}
                     className="absolute inset-0 flex items-center justify-center"
                   >
-                    <Film className="size-4 text-indigo-300/60" />
+                    <Film className="size-4 text-accent/60" />
                   </motion.div>
                 )}
                 {isCurrent && (
                   <motion.div
-                    className="absolute inset-0 bg-[#FF6B4A]/10"
+                    className="absolute inset-0 bg-primary/10"
                     animate={{ opacity: [0.3, 0.6, 0.3] }}
                     transition={{ duration: 1.2, repeat: Infinity }}
                   />
@@ -333,7 +338,7 @@ function FilmStripAnimation({ progress }: { progress: number }) {
         {/* Sprocket holes bottom */}
         <div className="mt-2 flex justify-between px-1">
           {Array.from({ length: frameCount }).map((_, i) => (
-            <div key={`bot-${i}`} className="size-2 rounded-sm bg-white/15" />
+            <div key={`bot-${i}`} className="size-2 rounded-sm bg-muted-foreground/20" />
           ))}
         </div>
       </div>

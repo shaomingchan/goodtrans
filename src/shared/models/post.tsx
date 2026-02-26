@@ -211,7 +211,8 @@ export async function getLocalPost({
     return null;
   }
 
-  const MDXContent = localPost.data.body;
+  // @ts-ignore - fumadocs version compat
+  const MDXContent = (localPost.data as any).body;
   const body = (
     <MDXContent
       components={getMDXComponents({
@@ -230,7 +231,7 @@ export async function getLocalPost({
     description: localPost.data.description || '',
     content: '',
     body: body,
-    toc: localPost.data.toc, // Use fumadocs auto-generated TOC
+    toc: (localPost.data as any).toc, // Use fumadocs auto-generated TOC
     created_at: frontmatter.created_at
       ? getPostDate({
           created_at: frontmatter.created_at,
@@ -259,7 +260,8 @@ export async function getLocalPage({
     return null;
   }
 
-  const MDXContent = localPage.data.body;
+  // @ts-ignore - fumadocs version compat
+  const MDXContent = (localPage.data as any).body;
   const body = (
     <MDXContent
       components={getMDXComponents({
@@ -278,7 +280,7 @@ export async function getLocalPage({
     description: localPage.data.description || '',
     content: '',
     body: body,
-    toc: localPage.data.toc, // Use fumadocs auto-generated TOC
+    toc: (localPage.data as any).toc, // Use fumadocs auto-generated TOC
     created_at: frontmatter.created_at
       ? getPostDate({
           created_at: frontmatter.created_at,
@@ -491,7 +493,8 @@ export async function getLocalPostsAndCategories({
 
       let body: React.ReactNode = undefined;
       if (type === PostType.LOG) {
-        const MDXContent = post.data.body;
+        // @ts-ignore - fumadocs version compat
+        const MDXContent = (post.data as any).body;
         body = <MDXContent components={getMDXComponents()} />;
       }
 

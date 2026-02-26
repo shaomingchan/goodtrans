@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "ShipAny 模板二",
-    "description": "ShipAny 是用于构建 AI SaaS 创业项目的 NextJS 脚手架。提供丰富模板和组件，助您快速上线产品。",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "Picmotion — 上传照片，AI 生成电影级 Vlog",
+    "description": "上传照片，AI 自动生成 2 分钟电影级人像 Vlog。无需剪辑，无需技能，即刻生成。",
+    "keywords": "picmotion, AI vlog, 照片生成视频, 人像vlog, AI视频生成"
   },
   "sign": {
     "sign_in_title": "登录",

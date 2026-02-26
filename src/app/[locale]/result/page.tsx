@@ -101,10 +101,10 @@ export default function ResultPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#0f0a1a] via-[#1a1035] to-[#0f0a1a]">
-        <div className="text-center">
-          <Loader2 className="mx-auto size-8 animate-spin text-indigo-400" />
-          <p className="mt-4 text-sm text-indigo-200/60">Loading your video...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background via-muted/30 to-background">
+        <div className="text-center" role="status" aria-label="Loading video">
+          <Loader2 className="mx-auto size-8 animate-spin text-accent" />
+          <p className="mt-4 text-sm text-muted-foreground">Loading your video...</p>
         </div>
       </div>
     );
@@ -113,13 +113,15 @@ export default function ResultPage() {
   // Error state
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#0f0a1a] via-[#1a1035] to-[#0f0a1a] px-4">
-        <div className="text-center">
-          <AlertCircle className="mx-auto size-8 text-red-400" />
-          <p className="mt-4 text-sm text-red-300">{error}</p>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background via-muted/30 to-background px-4">
+        <div className="text-center" role="alert">
+          <AlertCircle className="mx-auto size-8 text-destructive" />
+          <p className="mt-4 text-sm text-destructive/80">{error}</p>
           <Button
+            variant="secondary"
             onClick={() => router.push("/create")}
-            className="mt-4 gap-2 bg-white/10 hover:bg-white/20"
+            className="mt-4 gap-2"
+            aria-label="Retry video generation"
           >
             <RotateCcw className="size-4" />
             Try Again
@@ -130,11 +132,11 @@ export default function ResultPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-[#0f0a1a] via-[#1a1035] to-[#0f0a1a] px-4 py-8">
+    <div className="relative min-h-screen bg-gradient-to-b from-background via-muted/30 to-background px-4 py-8">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/10 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/3 h-[300px] w-[300px] rounded-full bg-[#FF6B4A]/8 blur-[100px]" />
+        <div className="absolute left-1/2 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/3 h-[300px] w-[300px] rounded-full bg-primary/[0.08] blur-[100px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-2xl">
@@ -144,7 +146,7 @@ export default function ResultPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-6 text-center"
         >
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-300">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-400">
             <Check className="size-3.5" />
             Your Vlog is ready
           </div>
@@ -155,7 +157,7 @@ export default function ResultPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/60 shadow-2xl shadow-indigo-500/10 backdrop-blur-sm"
+          className="relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-2xl shadow-accent/10 backdrop-blur-sm"
         >
           <div className="relative aspect-video w-full">
             <video
@@ -178,19 +180,19 @@ export default function ResultPage() {
                 className="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors hover:bg-black/20"
                 aria-label="Play video"
               >
-                <div className="flex size-16 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm transition-transform hover:scale-110">
-                  <Play className="ml-1 size-7 text-white" fill="white" />
+                <div className="flex size-16 items-center justify-center rounded-full bg-foreground/15 backdrop-blur-sm transition-transform hover:scale-110">
+                  <Play className="ml-1 size-7 text-foreground" fill="currentColor" />
                 </div>
               </motion.button>
             )}
           </div>
 
           {/* Video controls bar */}
-          <div className="flex items-center justify-between border-t border-white/5 px-4 py-3">
+          <div className="flex items-center justify-between border-t border-border/30 px-4 py-3">
             <button
               onClick={togglePlay}
-              className="text-white/60 transition-colors hover:text-white"
-              aria-label={isPlaying ? "Pause" : "Play"}
+              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              aria-label={isPlaying ? "Pause video" : "Play video"}
             >
               {isPlaying ? (
                 <Pause className="size-5" />
@@ -198,7 +200,7 @@ export default function ResultPage() {
                 <Play className="size-5" />
               )}
             </button>
-            <div className="flex items-center gap-2 text-xs text-white/40">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
               <Film className="size-3.5" />
               <span>HD 1080p</span>
             </div>
@@ -213,10 +215,10 @@ export default function ResultPage() {
           className="mt-5 flex items-start justify-between"
         >
           <div>
-            <h1 className="text-lg font-semibold text-white sm:text-xl">
+            <h1 className="text-lg font-semibold text-foreground sm:text-xl">
               My Portrait Vlog
             </h1>
-            <p className="mt-1 text-sm text-indigo-200/50">
+            <p className="mt-1 text-sm text-muted-foreground">
               Generated on {new Date().toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
@@ -236,7 +238,8 @@ export default function ResultPage() {
           <Button
             size="lg"
             onClick={handleDownload}
-            className="h-13 w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-[#FF6B4A] text-base font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl hover:shadow-indigo-500/30 hover:brightness-110"
+            className="h-14 w-full rounded-2xl bg-gradient-to-r from-accent via-accent/70 to-primary text-base font-semibold text-accent-foreground shadow-lg shadow-accent/25 transition-all hover:shadow-xl hover:shadow-accent/30 hover:brightness-110"
+            aria-label="Download HD video"
           >
             <Download className="mr-2 size-5" />
             Download HD Video
@@ -284,7 +287,8 @@ export default function ResultPage() {
           <Button
             variant="ghost"
             onClick={() => router.push("/create")}
-            className="gap-2 text-indigo-300/70 hover:bg-white/5 hover:text-indigo-200"
+            className="gap-2 text-accent/70 hover:bg-muted/50 hover:text-accent"
+            aria-label="Create another vlog"
           >
             <RotateCcw className="size-4" />
             Create Another Vlog
@@ -307,7 +311,8 @@ function ShareButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white/70 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
+      className="flex items-center justify-center gap-2 rounded-xl border border-border/50 bg-muted/30 px-3 py-3 text-sm text-muted-foreground transition-all hover:border-border hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      aria-label={label}
     >
       {icon}
       <span className="hidden sm:inline">{label}</span>

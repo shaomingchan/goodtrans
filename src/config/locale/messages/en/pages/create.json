@@ -1,0 +1,38 @@
+{
+  "page": {
+    "badge": "AI-Powered Vlog Creator",
+    "title": "Create Your Vlog",
+    "description": "Upload your photos, pick a style, and let AI craft a stunning 2-minute portrait Vlog.",
+    "step1_title": "Upload Photos",
+    "step2_title": "Choose a Style",
+    "photos_count": "{count}/{max} photos",
+    "photos_need_more": "(need {count} more)",
+    "dropzone_title": "Drag & drop your photos here",
+    "dropzone_hint": "or click to browse · JPG, PNG, WEBP · Max 10MB each",
+    "dropzone_range": "{min}–{max} photos required",
+    "add_more": "Add",
+    "error_invalid_type": "Only JPG, PNG, and WEBP files are accepted.",
+    "error_file_too_large": "Each file must be under 10MB.",
+    "error_max_photos": "Maximum {max} photos allowed.",
+    "uploading_photos": "Uploading photos... {progress}%",
+    "creating_vlog": "Creating your vlog...",
+    "redirecting": "Redirecting...",
+    "btn_uploading": "Uploading...",
+    "btn_create": "Create My Vlog — $19.9",
+    "btn_need_more": "Upload at least {min} photos to get started",
+    "styles": {
+      "cinematic": {
+        "name": "Cinematic",
+        "description": "Dramatic lighting, film grain, widescreen feel"
+      },
+      "romantic": {
+        "name": "Romantic",
+        "description": "Soft tones, warm glow, dreamy transitions"
+      },
+      "travel": {
+        "name": "Travel",
+        "description": "Vibrant colors, dynamic cuts, adventure vibes"
+      }
+    }
+  }
+}

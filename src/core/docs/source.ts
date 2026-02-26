@@ -18,10 +18,21 @@ const iconHelper = (icon: string | undefined) => {
   if (icon in icons) return createElement(icons[icon as keyof typeof icons]);
 };
 
+// Compat shim: fumadocs-mdx@11.10.1 returns { files: () => [...] }
+// but fumadocs-core@15.8.5 loader expects { files: [...] }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function resolveSource(src: any): any {
+  const { files, ...rest } = src;
+  return {
+    ...rest,
+    files: typeof files === 'function' ? files() : files,
+  };
+}
+
 // Docs source
 export const docsSource = loader({
   baseUrl: '/docs',
-  source: docs.toFumadocsSource(),
+  source: resolveSource(docs.toFumadocsSource()),
   i18n,
   icon: iconHelper,
 });
@@ -29,7 +40,7 @@ export const docsSource = loader({
 // Pages source (using root path)
 export const pagesSource = loader({
   baseUrl: '/',
-  source: pages.toFumadocsSource(),
+  source: resolveSource(pages.toFumadocsSource()),
   i18n,
   icon: iconHelper,
 });
@@ -37,7 +48,7 @@ export const pagesSource = loader({
 // Posts source
 export const postsSource = loader({
   baseUrl: '/blog',
-  source: posts.toFumadocsSource(),
+  source: resolveSource(posts.toFumadocsSource()),
   i18n,
   icon: iconHelper,
 });
@@ -45,7 +56,7 @@ export const postsSource = loader({
 // Logs source
 export const logsSource = loader({
   baseUrl: '/logs',
-  source: logs.toFumadocsSource(),
+  source: resolveSource(logs.toFumadocsSource()),
   i18n,
   icon: iconHelper,
 });

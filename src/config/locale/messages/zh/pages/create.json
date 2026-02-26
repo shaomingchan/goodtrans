@@ -1,0 +1,38 @@
+{
+  "page": {
+    "badge": "AI 驱动 Vlog 创作",
+    "title": "创建你的 Vlog",
+    "description": "上传照片，选择风格，AI 自动生成 2 分钟电影级人像 Vlog。",
+    "step1_title": "上传照片",
+    "step2_title": "选择风格",
+    "photos_count": "{count}/{max} 张",
+    "photos_need_more": "（还需 {count} 张）",
+    "dropzone_title": "拖拽照片到这里",
+    "dropzone_hint": "或点击选择 · JPG、PNG、WEBP · 单张最大 10MB",
+    "dropzone_range": "需要 {min}–{max} 张照片",
+    "add_more": "添加",
+    "error_invalid_type": "仅支持 JPG、PNG、WEBP 格式。",
+    "error_file_too_large": "单张照片不能超过 10MB。",
+    "error_max_photos": "最多上传 {max} 张照片。",
+    "uploading_photos": "上传中... {progress}%",
+    "creating_vlog": "正在生成 Vlog...",
+    "redirecting": "跳转中...",
+    "btn_uploading": "上传中...",
+    "btn_create": "立即生成 — $19.9",
+    "btn_need_more": "至少上传 {min} 张照片才能开始",
+    "styles": {
+      "cinematic": {
+        "name": "电影风",
+        "description": "戏剧性光影，胶片质感，宽银幕氛围"
+      },
+      "romantic": {
+        "name": "浪漫风",
+        "description": "柔和色调，暖光晕染，梦幻转场"
+      },
+      "travel": {
+        "name": "旅行风",
+        "description": "鲜艳色彩，动感剪辑，探险气息"
+      }
+    }
+  }
+}
