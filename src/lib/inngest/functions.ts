@@ -7,8 +7,6 @@ import { translate5Rounds } from '../translation/engine';
 import { extractTerms, formatGlossary } from '../translation/glossary';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const translationWorkflow = inngest.createFunction(
   { id: 'translation-workflow' },
   { event: 'translation/start' },
@@ -34,6 +32,7 @@ export const translationWorkflow = inngest.createFunction(
 
     // Step 4: Send email
     await step.run('send-email', async () => {
+      const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
         from: 'GoodTrans <noreply@goodtrans.ai>',
         to: email,
