@@ -1,66 +1,67 @@
 {
   "metadata": {
     "title": "Pricing",
-    "description": "Picmotion — Turn your photos into cinematic vlogs"
+    "description": "GoodTrans — Professional Translation. Machine Speed. Human Quality."
   },
   "page": {
-    "title": "Picmotion Pricing",
+    "title": "GoodTrans Pricing",
     "sections": {
       "pricing": {
         "id": "pricing",
         "title": "Simple Pricing",
-        "description": "No subscriptions. Pay only when you create.",
+        "description": "Pay per word. No subscriptions. First month 50% off.",
         "items": [
           {
-            "title": "Single Vlog",
-            "description": "Perfect for trying Picmotion",
+            "title": "10K Words",
+            "description": "Perfect for trying GoodTrans",
             "features_title": "Includes",
             "features": [
-              "1 cinematic portrait vlog",
-              "2-minute AI-generated video",
-              "HD download",
-              "Social media sharing",
-              "No watermark"
+              "5-round reflection translation",
+              "3-layer terminology system",
+              "Quality report included",
+              "Email notification",
+              "7-day download access"
             ],
-            "amount": 1990,
+            "amount": 12500,
             "currency": "USD",
-            "price": "$19.9",
-            "unit": "per vlog",
+            "price": "$125",
+            "original_price": "$250",
+            "unit": "10K words",
             "is_featured": false,
             "button": {
-              "title": "Create My Vlog",
+              "title": "Start Translation",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "single-vlog",
-            "product_name": "Picmotion Single Vlog"
+            "product_id": "10k-words",
+            "product_name": "GoodTrans 10K Words"
           },
           {
-            "title": "3-Pack",
-            "description": "Best value — save $10",
-            "label": "Save $10",
+            "title": "100K Words",
+            "description": "Best value — save 10%",
+            "label": "Save 10%",
             "features_title": "Includes",
             "features": [
-              "3 cinematic portrait vlogs",
-              "2-minute AI-generated videos",
-              "HD download",
-              "Social media sharing",
-              "No watermark",
+              "5-round reflection translation",
+              "3-layer terminology system",
+              "Quality report included",
+              "Email notification",
+              "7-day download access",
               "Priority processing"
             ],
-            "amount": 4990,
+            "amount": 112500,
             "currency": "USD",
-            "price": "$49.9",
-            "original_price": "$59.7",
-            "unit": "3 vlogs",
+            "price": "$1,125",
+            "original_price": "$2,250",
+            "unit": "100K words",
             "is_featured": true,
             "button": {
-              "title": "Get 3-Pack",
+              "title": "Get 100K Pack",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "3-pack-vlog",
-            "product_name": "Picmotion 3-Pack"
+            "product_id": "100k-words",
+            "product_name": "GoodTrans 100K Words"
           }
         ]
       }

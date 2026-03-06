@@ -1,21 +1,19 @@
 {
-  "name": "picmotion",
-  "version": "1.8.2",
+  "name": "goodtrans",
+  "version": "2.0.0",
   "private": true,
-  "author": "ShipAny.ai",
-  "homepage": "https://shipany.ai",
+  "author": "GoodTrans Team",
+  "homepage": "https://goodtrans.ai",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shipanyai/shipany-template-two"
+    "url": "https://github.com/shaomingchan/goodtrans"
   },
   "keywords": [
-    "shipany",
-    "shipany-two",
-    "shipany-template-two",
-    "ai-saas-boilerplate",
-    "ai-saas-template",
-    "ai-saas-framework",
-    "ai-saas-development"
+    "translation",
+    "ai-translation",
+    "reflection-translation",
+    "document-translation",
+    "terminology-management"
   ],
   "scripts": {
     "dev": "next dev --turbopack",
@@ -41,6 +39,7 @@
   "dependencies": {
     "@ai-sdk/react": "^2.0.89",
     "@ai-sdk/replicate": "^1.0.8",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@aws-sdk/client-s3": "^3.998.0",
     "@aws-sdk/s3-request-presigner": "^3.998.0",
     "@better-fetch/fetch": "^1.1.18",
@@ -101,6 +100,7 @@
     "fumadocs-ui": "^15.7.12",
     "github-markdown-css": "^5.8.1",
     "github-slugger": "^2.0.0",
+    "inngest": "^3.52.6",
     "lucide-react": "^0.543.0",
     "markdown-it": "^14.1.0",
     "moment": "^2.30.1",
