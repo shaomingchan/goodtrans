@@ -11,12 +11,12 @@
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "Your Photos. Your Story. A 2-Minute Vlog — Instantly.",
-        "description": "Upload any photo. We turn it into a cinematic portrait vlog — no editing, no prompts, no skills needed.",
+        "title": "Professional Translation. Machine Speed. Human Quality.",
+        "description": "Upload your document. Get professional translation in 1 hour. 5-round AI reflection + terminology consistency — no manual work needed.",
         "buttons": [
           {
-            "title": "Create My Vlog →",
-            "icon": "Zap",
+            "title": "Start Translation →",
+            "icon": "Languages",
             "url": "/create",
             "target": "_self",
             "variant": "default",
@@ -28,159 +28,160 @@
       },
       "stats": {
         "id": "stats",
-        "title": "Trusted by Creators Worldwide",
-        "description": "Join thousands who already turned their photos into cinematic vlogs.",
+        "title": "Trusted by Global Teams",
+        "description": "Join thousands who chose quality over speed.",
         "items": [
           {
-            "title": "127,000+",
-            "description": "Vlogs Created"
+            "title": "500K+",
+            "description": "Documents Translated"
           },
           {
-            "title": "4.9★",
-            "description": "Average Rating"
+            "title": "95%+",
+            "description": "Terminology Accuracy"
           },
           {
-            "title": "180+",
-            "description": "Countries"
+            "title": "100+",
+            "description": "Languages Supported"
           }
         ]
       },
       "features": {
         "id": "features",
-        "title": "How Picmotion Works",
-        "description": "From photos to cinematic vlog in seconds. No learning curve.",
+        "title": "How GoodTrans Works",
+        "description": "5-round reflection translation. Not just machine translation.",
         "items": [
           {
-            "title": "Upload & Done",
-            "description": "Just pick your photos. Our AI handles the rest.",
-            "icon": "RiUploadCloud2Line"
+            "title": "Upload & Relax",
+            "description": "PDF, Word, Markdown — we handle them all. Just upload and leave your email.",
+            "icon": "Upload"
           },
           {
-            "title": "Cinematic Quality, Zero Effort",
-            "description": "Every vlog looks like it was shot by a professional.",
-            "icon": "RiFilmLine"
+            "title": "5-Round AI Reflection",
+            "description": "Extract → Optimize → Translate → Reflect → Finalize. Quality close to human translation.",
+            "icon": "RefreshCw"
           },
           {
-            "title": "2-Minute Vlog, Every Time",
-            "description": "Not a slideshow. A real vlog with story flow.",
-            "icon": "RiTimerLine"
+            "title": "3-Layer Terminology System",
+            "description": "User glossary + Official database + AI extraction. Ensure consistency across your docs.",
+            "icon": "Database"
           },
           {
-            "title": "Works With Any Photo",
-            "description": "Selfies, travel shots, wedding photos, old family pictures.",
-            "icon": "RiImageLine"
+            "title": "100K Words in 1 Hour",
+            "description": "Not 12 minutes, but way faster than human translators (1-2 weeks).",
+            "icon": "Clock"
           },
           {
-            "title": "Share Anywhere, Instantly",
-            "description": "Download in HD or share directly to social media.",
-            "icon": "RiShareLine"
+            "title": "Email Notification",
+            "description": "Get notified when done. Download high-quality translation instantly.",
+            "icon": "Mail"
           }
         ]
       },
       "pricing": {
         "id": "pricing",
         "title": "Simple Pricing",
-        "description": "No subscriptions. Pay only when you create.",
+        "description": "Pay per word. No subscriptions. First month 50% off.",
         "items": [
           {
-            "title": "Single Vlog",
-            "description": "Perfect for trying Picmotion",
+            "title": "10K Words",
+            "description": "Perfect for trying GoodTrans",
             "features_title": "Includes",
             "features": [
-              "1 cinematic portrait vlog",
-              "2-minute AI-generated video",
-              "HD download",
-              "Social media sharing",
-              "No watermark"
+              "5-round reflection translation",
+              "3-layer terminology system",
+              "Quality report included",
+              "Email notification",
+              "7-day download access"
             ],
-            "amount": 1990,
+            "amount": 12500,
             "currency": "USD",
-            "price": "$19.9",
-            "unit": "per vlog",
+            "price": "$125",
+            "original_price": "$250",
+            "unit": "10K words",
             "is_featured": false,
             "button": {
-              "title": "Create My Vlog",
+              "title": "Start Translation",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "single-vlog",
-            "product_name": "Picmotion Single Vlog"
+            "product_id": "10k-words",
+            "product_name": "GoodTrans 10K Words"
           },
           {
-            "title": "3-Pack",
-            "description": "Best value — save $10",
-            "label": "Save $10",
+            "title": "100K Words",
+            "description": "Best value — save 10%",
+            "label": "Save 10%",
             "features_title": "Includes",
             "features": [
-              "3 cinematic portrait vlogs",
-              "2-minute AI-generated videos",
-              "HD download",
-              "Social media sharing",
-              "No watermark",
+              "5-round reflection translation",
+              "3-layer terminology system",
+              "Quality report included",
+              "Email notification",
+              "7-day download access",
               "Priority processing"
             ],
-            "amount": 4990,
+            "amount": 112500,
             "currency": "USD",
-            "price": "$49.9",
-            "original_price": "$59.7",
-            "unit": "3 vlogs",
+            "price": "$1,125",
+            "original_price": "$2,250",
+            "unit": "100K words",
             "is_featured": true,
             "button": {
-              "title": "Get 3-Pack",
+              "title": "Get 100K Pack",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "3-pack-vlog",
-            "product_name": "Picmotion 3-Pack"
+            "product_id": "100k-words",
+            "product_name": "GoodTrans 100K Words"
           }
         ]
       },
       "faq": {
         "id": "faq",
         "title": "Frequently Asked Questions",
-        "description": "Everything you need to know about Picmotion.",
+        "description": "Everything you need to know about GoodTrans.",
         "items": [
           {
-            "question": "What is Picmotion?",
-            "answer": "Picmotion is an AI-powered tool that transforms your photos into cinematic 2-minute portrait vlogs. Just upload your photos and our AI does the rest — no editing skills, no prompts, no effort required."
+            "question": "What is GoodTrans?",
+            "answer": "GoodTrans is an AI-powered translation service using 5-round reflection technology. Unlike simple machine translation, we iterate multiple times to ensure quality close to human translation."
           },
           {
-            "question": "What kind of photos can I use?",
-            "answer": "Any photo works! Selfies, travel shots, wedding photos, old family pictures, group photos — Picmotion's AI adapts to any style and creates a beautiful vlog from whatever you upload."
+            "question": "What file formats do you support?",
+            "answer": "We support PDF, Word (.docx), Markdown (.md), and plain text (.txt). More formats coming soon."
           },
           {
-            "question": "How long does it take to generate a vlog?",
-            "answer": "Most vlogs are ready within 2-3 minutes after uploading your photos. You'll receive a notification when your vlog is ready to download or share."
+            "question": "How long does translation take?",
+            "answer": "100K words take about 1 hour. You'll receive an email notification when your translation is ready."
           },
           {
-            "question": "Is it really just a slideshow?",
-            "answer": "Not at all. Picmotion creates a real vlog with cinematic transitions, story flow, music, and professional-grade motion effects. It looks like it was produced by a video editor."
+            "question": "What is 5-round reflection translation?",
+            "answer": "Round 1: Extract text from PDF. Round 2: Optimize formatting. Round 3: Initial translation. Round 4: AI reflects and finds issues. Round 5: Apply improvements and finalize. This ensures much higher quality than one-shot translation."
           },
           {
-            "question": "Can I share my vlog on social media?",
-            "answer": "Yes! You can download your vlog in HD quality or share it directly to Instagram, TikTok, YouTube, and other platforms with one click."
+            "question": "How accurate is terminology consistency?",
+            "answer": "Our 3-layer terminology system (user glossary + official database + AI extraction) achieves 95%+ consistency. We're still testing and will update the exact number after 100 documents."
           },
           {
             "question": "What payment methods do you accept?",
-            "answer": "We accept PayPal and all major credit cards. Payment is secure and processed instantly."
+            "answer": "We accept Stripe (credit cards) and Creem (Alipay/WeChat Pay for Chinese users)."
           },
           {
             "question": "Do you offer refunds?",
-            "answer": "If you're not satisfied with your vlog, contact our support team within 24 hours and we'll work with you to make it right or issue a refund."
+            "answer": "If you're not satisfied with the translation quality, contact us within 24 hours and we'll work with you to improve it or issue a refund."
           }
         ],
-        "tip": "Still have questions? <a href='mailto:support@picmotion.ai' class='text-primary underline'>Contact us</a>"
+        "tip": "Still have questions? <a href='mailto:support@goodtrans.ai' class='text-primary underline'>Contact us</a>"
       },
       "cta": {
         "id": "cta",
-        "title": "Ready to Turn Your Photos Into a Vlog?",
-        "description": "Upload your photos. Get a cinematic portrait vlog in minutes.",
+        "title": "Ready to Get Professional Translation?",
+        "description": "Upload your document. Get human-quality translation in 1 hour.",
         "buttons": [
           {
-            "title": "Create My Vlog →",
+            "title": "Start Translation →",
             "url": "/create",
             "target": "_self",
-            "icon": "Zap"
+            "icon": "Languages"
           }
         ]
       }

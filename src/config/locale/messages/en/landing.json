@@ -2,10 +2,10 @@
   "header": {
     "id": "header",
     "brand": {
-      "title": "Picmotion",
+      "title": "GoodTrans",
       "logo": {
         "src": "/logo.png",
-        "alt": "Picmotion",
+        "alt": "GoodTrans",
         "width": 100,
         "height": 100
       },
@@ -37,7 +37,7 @@
       "show_sign_out": true,
       "items": [
         {
-          "title": "My Vlogs",
+          "title": "My Translations",
           "url": "/activity",
           "icon": "Activity"
         }
@@ -50,11 +50,11 @@
   "footer": {
     "id": "footer",
     "brand": {
-      "title": "Picmotion",
-      "description": "Upload photos, get a cinematic 2-minute portrait vlog — powered by AI.",
+      "title": "GoodTrans",
+      "description": "Professional translation with AI reflection technology. Machine speed, human quality.",
       "logo": {
         "src": "/logo.png",
-        "alt": "Picmotion",
+        "alt": "GoodTrans",
         "width": 100,
         "height": 100
       },
@@ -99,13 +99,13 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/picmotion",
+          "url": "https://x.com/goodtrans",
           "target": "_blank"
         },
         {
           "title": "Email",
           "icon": "Mail",
-          "url": "mailto:support@picmotion.ai",
+          "url": "mailto:support@goodtrans.ai",
           "target": "_self"
         }
       ]
