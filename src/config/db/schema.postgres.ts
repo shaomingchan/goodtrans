@@ -557,4 +557,27 @@ export const chatMessage = table(
   ]
 );
 
+export const translationTask = table(
+  'translation_task',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
+    email: text('email').notNull(),
+    status: text('status').notNull(), // pending/processing/completed/failed
+    sourceLang: text('source_lang').notNull(),
+    targetLang: text('target_lang').notNull(),
+    sourceText: text('source_text').notNull(),
+    translatedText: text('translated_text'),
+    currentRound: integer('current_round').default(0).notNull(),
+    totalRounds: integer('total_rounds').default(5).notNull(),
+    errorMessage: text('error_message'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    completedAt: timestamp('completed_at'),
+  },
+  (table) => [
+    index('idx_translation_task_status').on(table.status),
+    index('idx_translation_task_email').on(table.email),
+  ]
+);
+
 

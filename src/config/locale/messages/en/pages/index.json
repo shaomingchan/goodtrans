@@ -17,7 +17,7 @@
           {
             "title": "Start Translation →",
             "icon": "Languages",
-            "url": "/create",
+            "url": "/translate",
             "target": "_self",
             "variant": "default",
             "size": "lg"
@@ -101,7 +101,7 @@
             "is_featured": false,
             "button": {
               "title": "Start Translation",
-              "url": "/create",
+              "url": "/translate",
               "icon": "Zap"
             },
             "product_id": "10k-words",
@@ -128,7 +128,7 @@
             "is_featured": true,
             "button": {
               "title": "Get 100K Pack",
-              "url": "/create",
+              "url": "/translate",
               "icon": "Zap"
             },
             "product_id": "100k-words",
@@ -179,7 +179,7 @@
         "buttons": [
           {
             "title": "Start Translation →",
-            "url": "/create",
+            "url": "/translate",
             "target": "_self",
             "icon": "Languages"
           }
