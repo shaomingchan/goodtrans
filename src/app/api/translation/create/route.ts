@@ -9,6 +9,8 @@ import { inngest } from '@/lib/inngest/client';
 import { db } from '@/core/db';
 import { translationTask } from '@/config/db/schema';
 import { nanoid } from 'nanoid';
+import { getAuth } from '@/core/auth';
+import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
 
 const schema = z.object({
   sourceText: z.string(),
@@ -19,6 +21,19 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Rate limit: 1 request per 10 seconds per user
+  const rateLimited = enforceMinIntervalRateLimit(req, {
+    intervalMs: 10000,
+    keyPrefix: 'translation-create',
+  });
+  if (rateLimited) return rateLimited;
+
+  // Auth check
+  const auth = await getAuth();
+  const session = await auth.api.getSession({ headers: req.headers });
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const body = await req.json();
     const data = schema.parse(body);
@@ -28,8 +43,8 @@ export async function POST(req: NextRequest) {
     // Create DB record
     await db().insert(translationTask).values({
       id: taskId,
-      userId: data.userId || null,
-      email: data.email,
+      userId: session.user.id,
+      email: session.user.email,
       status: 'pending',
       sourceLang: data.sourceLang,
       targetLang: data.targetLang,
@@ -46,7 +61,7 @@ export async function POST(req: NextRequest) {
         sourceText: data.sourceText,
         sourceLang: data.sourceLang,
         targetLang: data.targetLang,
-        email: data.email,
+        email: session.user.email,
       },
     });
 

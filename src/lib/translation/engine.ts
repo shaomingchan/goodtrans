@@ -162,22 +162,23 @@ export async function translate5Rounds(
   const segments = segmentText(optimized);
   const results: TranslationSegment[] = [];
 
-  // Process each segment
-  for (const segment of segments) {
-    // Round 3: Draft
-    const draft = await translateDraft(segment, targetLang, glossary);
-
-    // Round 4: Reflect
-    const reflection = await reflectTranslation(segment, draft, targetLang, glossary);
-
-    // Round 5: Finalize
-    const final = await finalize(segment, draft, reflection, targetLang, glossary);
-
-    results.push({
-      original: segment,
-      translated: final,
-      glossary: [],
-    });
+  // Process segments with concurrency limit of 3
+  const CONCURRENCY = 3;
+  for (let i = 0; i < segments.length; i += CONCURRENCY) {
+    const batch = segments.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.all(
+      batch.map(async (segment) => {
+        const draft = await translateDraft(segment, targetLang, glossary);
+        const reflection = await reflectTranslation(segment, draft, targetLang, glossary);
+        const final = await finalize(segment, draft, reflection, targetLang, glossary);
+        return {
+          original: segment,
+          translated: final,
+          glossary: [],
+        };
+      })
+    );
+    results.push(...batchResults);
   }
 
   return {
