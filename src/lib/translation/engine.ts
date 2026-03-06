@@ -3,10 +3,11 @@
  * Based on Make workflow: Extract → Optimize → Translate → Reflect → Finalize
  */
 
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const client = new OpenAI({
+  apiKey: process.env.AI_302_API_KEY || '',
+  baseURL: 'https://api.302.ai/v1',
 });
 
 export interface TranslationSegment {
@@ -25,7 +26,7 @@ export interface TranslationResult {
  * Round 2: Format Optimization (Markdown cleanup)
  */
 export async function optimizeFormat(markdown: string): Promise<string> {
-  const response = await anthropic.messages.create({
+  const response = await client.chat.completions.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 4096,
     messages: [
@@ -38,7 +39,7 @@ ${markdown}`,
     ],
   });
 
-  return response.content[0].type === 'text' ? response.content[0].text : '';
+  return response.choices[0]?.message?.content || '';
 }
 
 /**
@@ -49,7 +50,7 @@ export async function translateDraft(
   targetLang: string,
   glossary: string
 ): Promise<string> {
-  const response = await anthropic.messages.create({
+  const response = await client.chat.completions.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 8192,
     messages: [
@@ -65,7 +66,7 @@ ${text}`,
     ],
   });
 
-  return response.content[0].type === 'text' ? response.content[0].text : '';
+  return response.choices[0]?.message?.content || '';
 }
 
 /**
@@ -77,7 +78,7 @@ export async function reflectTranslation(
   targetLang: string,
   glossary: string
 ): Promise<string> {
-  const response = await anthropic.messages.create({
+  const response = await client.chat.completions.create({
     model: 'claude-opus-4-20250514',
     max_tokens: 4096,
     messages: [
@@ -95,7 +96,7 @@ Output improvement suggestions only.`,
     ],
   });
 
-  return response.content[0].type === 'text' ? response.content[0].text : '';
+  return response.choices[0]?.message?.content || '';
 }
 
 /**
@@ -108,7 +109,7 @@ export async function finalize(
   targetLang: string,
   glossary: string
 ): Promise<string> {
-  const response = await anthropic.messages.create({
+  const response = await client.chat.completions.create({
     model: 'claude-opus-4-20250514',
     max_tokens: 8192,
     messages: [
@@ -127,7 +128,7 @@ Output final translation only.`,
     ],
   });
 
-  return response.content[0].type === 'text' ? response.content[0].text : '';
+  return response.choices[0]?.message?.content || '';
 }
 
 /**
