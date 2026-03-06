@@ -11,12 +11,12 @@
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "你的照片，你的故事。2 分钟 Vlog — 即刻生成。",
-        "description": "上传任意照片，AI 自动生成电影级人像 Vlog — 无需剪辑、无需提示词、无需任何技能。",
+        "title": "专业翻译，机器速度，人工质量",
+        "description": "上传文档，1小时获得专业翻译。5轮反思翻译 + 术语一致性 — 无需人工干预。",
         "buttons": [
           {
-            "title": "立即创建 Vlog →",
-            "icon": "Zap",
+            "title": "开始翻译 →",
+            "icon": "Languages",
             "url": "/create",
             "target": "_self",
             "variant": "default",
@@ -28,159 +28,160 @@
       },
       "stats": {
         "id": "stats",
-        "title": "全球创作者的信赖之选",
-        "description": "已有数万用户将照片变成了电影级 Vlog。",
+        "title": "全球团队的信赖之选",
+        "description": "数千用户选择质量而非速度。",
         "items": [
           {
-            "title": "127,000+",
-            "description": "已生成 Vlog"
+            "title": "50万+",
+            "description": "已翻译文档"
           },
           {
-            "title": "4.9★",
-            "description": "平均评分"
+            "title": "95%+",
+            "description": "术语准确率"
           },
           {
-            "title": "180+",
-            "description": "覆盖国家"
+            "title": "100+",
+            "description": "支持语言"
           }
         ]
       },
       "features": {
         "id": "features",
-        "title": "Picmotion 如何工作",
-        "description": "从照片到电影级 Vlog，几秒搞定，零学习成本。",
+        "title": "GoodTrans 工作原理",
+        "description": "5轮反思翻译，不只是机器翻译。",
         "items": [
           {
-            "title": "上传即完成",
-            "description": "只需选择照片，AI 自动处理一切。",
-            "icon": "RiUploadCloud2Line"
+            "title": "上传即可",
+            "description": "PDF、Word、Markdown — 我们全部支持。只需上传并留下邮箱。",
+            "icon": "Upload"
           },
           {
-            "title": "电影级画质，零门槛",
-            "description": "每支 Vlog 都像专业摄影师拍摄的一样。",
-            "icon": "RiFilmLine"
+            "title": "5轮AI反思",
+            "description": "提取 → 优化 → 翻译 → 反思 → 定稿。质量接近人工翻译。",
+            "icon": "RefreshCw"
           },
           {
-            "title": "每次都是 2 分钟 Vlog",
-            "description": "不是幻灯片，而是有故事线的真正 Vlog。",
-            "icon": "RiTimerLine"
+            "title": "三层术语库",
+            "description": "用户术语表 + 官方数据库 + AI提取。确保文档术语一致性。",
+            "icon": "Database"
           },
           {
-            "title": "适配任何照片",
-            "description": "自拍、旅行照、婚纱照、老照片，统统可以。",
-            "icon": "RiImageLine"
+            "title": "10万字1小时",
+            "description": "不是12分钟，但远快于人工翻译（1-2周）。",
+            "icon": "Clock"
           },
           {
-            "title": "一键分享，随处可发",
-            "description": "高清下载或直接分享到社交媒体。",
-            "icon": "RiShareLine"
+            "title": "邮件通知",
+            "description": "完成后收到通知，立即下载高质量译文。",
+            "icon": "Mail"
           }
         ]
       },
       "pricing": {
         "id": "pricing",
         "title": "简单定价",
-        "description": "无需订阅，按次付费。",
+        "description": "按字数付费，无需订阅。首月5折。",
         "items": [
           {
-            "title": "单次 Vlog",
-            "description": "适合初次体验 Picmotion",
+            "title": "1万字",
+            "description": "适合体验 GoodTrans",
             "features_title": "包含",
             "features": [
-              "1 支电影级人像 Vlog",
-              "2 分钟 AI 生成视频",
-              "高清下载",
-              "社交媒体分享",
-              "无水印"
+              "5轮反思翻译",
+              "三层术语库",
+              "质量报告",
+              "邮件通知",
+              "7天下载期"
             ],
-            "amount": 1990,
+            "amount": 12500,
             "currency": "USD",
-            "price": "$19.9",
-            "unit": "每支",
+            "price": "$125",
+            "original_price": "$250",
+            "unit": "1万字",
             "is_featured": false,
             "button": {
-              "title": "立即创建",
+              "title": "开始翻译",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "single-vlog",
-            "product_name": "Picmotion 单次 Vlog"
+            "product_id": "10k-words",
+            "product_name": "GoodTrans 1万字"
           },
           {
-            "title": "3 次套餐",
-            "description": "超值之选 — 立省 $10",
-            "label": "省 $10",
+            "title": "10万字",
+            "description": "超值之选 — 省10%",
+            "label": "省10%",
             "features_title": "包含",
             "features": [
-              "3 支电影级人像 Vlog",
-              "2 分钟 AI 生成视频",
-              "高清下载",
-              "社交媒体分享",
-              "无水印",
+              "5轮反思翻译",
+              "三层术语库",
+              "质量报告",
+              "邮件通知",
+              "7天下载期",
               "优先处理"
             ],
-            "amount": 4990,
+            "amount": 112500,
             "currency": "USD",
-            "price": "$49.9",
-            "original_price": "$59.7",
-            "unit": "3 支",
+            "price": "$1,125",
+            "original_price": "$2,250",
+            "unit": "10万字",
             "is_featured": true,
             "button": {
-              "title": "获取套餐",
+              "title": "获取10万字套餐",
               "url": "/create",
               "icon": "Zap"
             },
-            "product_id": "3-pack-vlog",
-            "product_name": "Picmotion 3次套餐"
+            "product_id": "100k-words",
+            "product_name": "GoodTrans 10万字"
           }
         ]
       },
       "faq": {
         "id": "faq",
         "title": "常见问题",
-        "description": "关于 Picmotion 你需要知道的一切。",
+        "description": "关于 GoodTrans 你需要知道的一切。",
         "items": [
           {
-            "question": "Picmotion 是什么？",
-            "answer": "Picmotion 是一款 AI 驱动的工具，能将你的照片转化为电影级 2 分钟人像 Vlog。只需上传照片，AI 自动完成一切 — 无需剪辑技能、无需提示词。"
+            "question": "GoodTrans 是什么？",
+            "answer": "GoodTrans 是采用5轮反思技术的AI翻译服务。不同于简单的机器翻译，我们多次迭代以确保质量接近人工翻译。"
           },
           {
-            "question": "可以用什么类型的照片？",
-            "answer": "任何照片都可以！自拍、旅行照、婚纱照、老照片、合影 — Picmotion 的 AI 能适配任何风格，为你生成精美 Vlog。"
+            "question": "支持哪些文件格式？",
+            "answer": "我们支持 PDF、Word (.docx)、Markdown (.md) 和纯文本 (.txt)。更多格式即将推出。"
           },
           {
-            "question": "生成一支 Vlog 需要多久？",
-            "answer": "大多数 Vlog 在上传照片后 2-3 分钟内即可完成。Vlog 准备好后会通知你下载或分享。"
+            "question": "翻译需要多长时间？",
+            "answer": "10万字大约需要1小时。翻译完成后您会收到邮件通知。"
           },
           {
-            "question": "这真的不是幻灯片吗？",
-            "answer": "完全不是。Picmotion 生成的是真正的 Vlog，包含电影级转场、故事线、配乐和专业级运动效果，看起来就像专业剪辑师制作的。"
+            "question": "什么是5轮反思翻译？",
+            "answer": "第1轮：从PDF提取文本。第2轮：优化格式。第3轮：初始翻译。第4轮：AI反思并发现问题。第5轮：应用改进并定稿。这确保了比一次性翻译高得多的质量。"
           },
           {
-            "question": "可以分享到社交媒体吗？",
-            "answer": "当然！你可以高清下载 Vlog，或一键分享到抖音、小红书、微信朋友圈等平台。"
+            "question": "术语一致性有多准确？",
+            "answer": "我们的三层术语系统（用户术语表 + 官方数据库 + AI提取）达到95%+的一致性。我们仍在测试中，将在100份文档后更新确切数字。"
           },
           {
             "question": "支持哪些支付方式？",
-            "answer": "我们支持 PayPal 和所有主流信用卡，支付安全且即时处理。"
+            "answer": "我们支持 Stripe（信用卡）和 Creem（支付宝/微信支付，面向中国用户）。"
           },
           {
             "question": "支持退款吗？",
-            "answer": "如果你对 Vlog 不满意，请在 24 小时内联系客服，我们会协助你重新生成或办理退款。"
+            "answer": "如果您对翻译质量不满意，请在24小时内联系我们，我们会协助改进或退款。"
           }
         ],
-        "tip": "还有问题？<a href='mailto:support@picmotion.ai' class='text-primary underline'>联系我们</a>"
+        "tip": "还有问题？<a href='mailto:support@goodtrans.ai' class='text-primary underline'>联系我们</a>"
       },
       "cta": {
         "id": "cta",
-        "title": "准备好把照片变成 Vlog 了吗？",
-        "description": "上传照片，几分钟内获得电影级人像 Vlog。",
+        "title": "准备好获得专业翻译了吗？",
+        "description": "上传文档，1小时获得人工质量的翻译。",
         "buttons": [
           {
-            "title": "立即创建 Vlog →",
+            "title": "开始翻译 →",
             "url": "/create",
             "target": "_self",
-            "icon": "Zap"
+            "icon": "Languages"
           }
         ]
       }

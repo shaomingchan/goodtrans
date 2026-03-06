@@ -7,7 +7,6 @@ import {
   pgTable,
   text,
   timestamp,
-  uuid,
 } from 'drizzle-orm/pg-core';
 
 import { envConfigs } from '@/config';
@@ -558,25 +557,4 @@ export const chatMessage = table(
   ]
 );
 
-// ── Picmotion Business Tables ───────────────────────────────────────────
 
-export const vlogJob = table(
-  'vlog_job',
-  {
-    id: uuid('id').defaultRandom().primaryKey(),
-    userId: text('user_id'), // nullable for MVP anonymous usage
-    status: text('status').notNull().default('pending'), // pending/processing/completed/failed
-    style: text('style').notNull(), // cinematic/romantic/travel
-    photoUrls: jsonb('photo_urls').notNull(), // array of photo URLs
-    videoUrl: text('video_url'), // generated video URL
-    rhTaskIds: jsonb('rh_task_ids'), // RunningHub task ID array
-    errorMessage: text('error_message'),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    completedAt: timestamp('completed_at'),
-  },
-  (table) => [
-    index('idx_vlog_job_user_status').on(table.userId, table.status),
-    index('idx_vlog_job_status').on(table.status),
-    index('idx_vlog_job_created_at').on(table.createdAt),
-  ]
-);
