@@ -9,6 +9,8 @@ import {
   handleCheckoutSuccess,
 } from '@/shared/services/payment';
 
+import { assertCallbackOrderNoMatches } from '../_lib/order-no-guards';
+
 export async function GET(req: Request) {
   let redirectUrl = '';
 
@@ -59,9 +61,7 @@ export async function GET(req: Request) {
       sessionId: order.paymentSessionId,
     });
 
-    if (session.metadata?.order_no && session.metadata.order_no !== orderNo) {
-      throw new Error('order no mismatch');
-    }
+    assertCallbackOrderNoMatches(session.metadata?.order_no, orderNo);
 
     // console.log('callback payment session', session);
 
