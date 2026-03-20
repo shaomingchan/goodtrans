@@ -1,5 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import Stripe from 'stripe';
+
+import { envConfigs } from '@/config';
+import { PaymentType } from '@/extensions/payment/types';
+import { respData, respErr } from '@/shared/lib/resp';
+import { getSnowId, getUuid } from '@/shared/lib/hash';
+import {
+  createOrder,
+  OrderStatus,
+  updateOrderByOrderNo,
+} from '@/shared/models/order';
+import { getUserInfo } from '@/shared/models/user';
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -7,68 +18,84 @@ function getStripe() {
   return new Stripe(key, { apiVersion: '2025-08-27.basil' });
 }
 
-const PRICING_PLANS = {
-  monthly: {
-    priceId: process.env.STRIPE_MONTHLY_PRICE_ID || '',
-    name: 'Monthly Plan',
-    amount: 1200, // $12.00
+const PACKAGES = {
+  'pay-as-you-go': {
+    name: 'Pay as you go',
+    description: '$0.05 per word',
+    amount: 0,
     currency: 'usd',
   },
-  annual: {
-    priceId: process.env.STRIPE_ANNUAL_PRICE_ID || '',
-    name: 'Annual Plan',
-    amount: 12000, // $120.00
+  '10k-words': {
+    name: '10K Words Package',
+    description: '10,000 words package',
+    amount: 39900,
     currency: 'usd',
   },
-};
+  '100k-words': {
+    name: '100K Words Package',
+    description: '100,000 words package',
+    amount: 199900,
+    currency: 'usd',
+  },
+} as const;
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { packageType, email } = body;
-
-    if (!packageType || !['pay-as-you-go', '10k-words', '100k-words'].includes(packageType)) {
-      return NextResponse.json(
-        { error: 'Invalid package type' },
-        { status: 400 }
-      );
+    const user = await getUserInfo();
+    if (!user) {
+      return Response.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const packages = {
-      'pay-as-you-go': {
-        name: 'Pay as you go',
-        description: '$0.05 per word',
-        amount: 0, // No upfront charge
-      },
-      '10k-words': {
-        name: '10K Words Package',
-        description: '10,000 words for $399',
-        amount: 39900, // $399.00
-      },
-      '100k-words': {
-        name: '100K Words Package',
-        description: '100,000 words for $1,999',
-        amount: 199900, // $1,999.00
-      },
-    };
+    const body = await request.json();
+    const packageType = body.packageType || body.product_id;
+    const email = body.email || user.email;
 
-    const pkg = packages[packageType as keyof typeof packages];
+    if (
+      !packageType ||
+      !['pay-as-you-go', '10k-words', '100k-words'].includes(packageType)
+    ) {
+      return respErr('Invalid package type');
+    }
 
-    // For pay-as-you-go, no checkout needed
+    const pkg = PACKAGES[packageType as keyof typeof PACKAGES];
+
     if (packageType === 'pay-as-you-go') {
-      return NextResponse.json({
-        success: true,
-        message: 'Ready to translate. Charges will be applied per word at $0.05/word',
+      return respData({
+        message:
+          'Ready to translate. Charges will be applied per word at $0.05/word',
       });
     }
 
-    // Create checkout session for packages
+    const orderNo = getSnowId();
+    const now = new Date();
+
+    await createOrder({
+      id: getUuid(),
+      orderNo,
+      userId: user.id,
+      userEmail: user.email,
+      status: OrderStatus.PENDING,
+      amount: pkg.amount,
+      currency: pkg.currency,
+      productId: packageType,
+      paymentType: PaymentType.ONE_TIME,
+      paymentProvider: 'stripe',
+      checkoutInfo: JSON.stringify({
+        packageType,
+        email,
+      }),
+      createdAt: now,
+      productName: pkg.name,
+      description: pkg.description,
+      callbackUrl: `${envConfigs.app_url}/settings/payments`,
+    });
+
     const session = await getStripe().checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: pkg.currency,
             product_data: {
               name: pkg.name,
               description: pkg.description,
@@ -79,21 +106,31 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+      success_url: `${envConfigs.app_url}/api/payment/callback?order_no=${orderNo}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${envConfigs.app_url}/pricing?canceled=1&order_no=${orderNo}`,
       customer_email: email,
+      metadata: {
+        order_no: orderNo,
+      },
     });
 
-    return NextResponse.json({
-      success: true,
+    await updateOrderByOrderNo(orderNo, {
+      status: OrderStatus.CREATED,
+      paymentSessionId: session.id,
+      checkoutUrl: session.url,
+      checkoutResult: JSON.stringify(session),
+    });
+
+    return respData({
+      orderNo,
       sessionId: session.id,
+      checkoutUrl: session.url,
       url: session.url,
     });
   } catch (error) {
     console.error('Stripe error:', error);
-    return NextResponse.json(
-      { error: 'Payment session creation failed', details: String(error) },
-      { status: 500 }
+    return respErr(
+      `Payment session creation failed: ${error instanceof Error ? error.message : String(error)}`
     );
   }
 }
