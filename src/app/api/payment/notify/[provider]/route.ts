@@ -53,7 +53,7 @@ export async function POST(
 
     if (eventType === PaymentEventType.CHECKOUT_SUCCESS) {
       // one-time payment or subscription first payment
-      const orderNo = session.metadata.order_no;
+      const orderNo = session.metadata?.order_no;
 
       if (!orderNo) {
         throw new Error('order no not found');
@@ -62,6 +62,12 @@ export async function POST(
       const order = await findOrderByOrderNo(orderNo);
       if (!order) {
         throw new Error('order not found');
+      }
+
+      if (order.paymentSessionId && session.paymentInfo?.transactionId) {
+        if (order.paymentSessionId !== session.paymentInfo.transactionId) {
+          throw new Error('payment session mismatch');
+        }
       }
 
       await handleCheckoutSuccess({
@@ -170,6 +176,12 @@ export async function POST(
         const order = await findOrderByOrderNo(orderNo);
         if (!order) {
           throw new Error('order not found');
+        }
+
+        if (order.paymentSessionId && session.paymentInfo?.transactionId) {
+          if (order.paymentSessionId !== session.paymentInfo.transactionId) {
+            throw new Error('payment session mismatch');
+          }
         }
 
         // handleCheckoutSuccess has idempotency check and optimistic lock

@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
       callbackUrl: `${envConfigs.app_url}/settings/payments`,
     });
 
+    const callbackBaseParams = `order_no=${orderNo}`;
     const session = await getStripe().checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -106,8 +107,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${envConfigs.app_url}/api/payment/callback?order_no=${orderNo}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${envConfigs.app_url}/pricing?canceled=1&order_no=${orderNo}`,
+      success_url: `${envConfigs.app_url}/api/payment/callback?${callbackBaseParams}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${envConfigs.app_url}/pricing?${callbackBaseParams}&canceled=1`,
       customer_email: email,
       metadata: {
         order_no: orderNo,

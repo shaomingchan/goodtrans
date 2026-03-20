@@ -16,6 +16,7 @@ export async function GET(req: Request) {
     // get callback params
     const { searchParams } = new URL(req.url);
     const orderNo = searchParams.get('order_no');
+    const sessionId = searchParams.get('session_id');
 
     if (!orderNo) {
       throw new Error('invalid callback params');
@@ -42,6 +43,10 @@ export async function GET(req: Request) {
       throw new Error('order and user not match');
     }
 
+    if (sessionId && order.paymentSessionId !== sessionId) {
+      throw new Error('session id mismatch');
+    }
+
     const paymentService = await getPaymentService();
 
     const paymentProvider = paymentService.getProvider(order.paymentProvider);
@@ -54,6 +59,10 @@ export async function GET(req: Request) {
       sessionId: order.paymentSessionId,
     });
 
+    if (session.metadata?.order_no && session.metadata.order_no !== orderNo) {
+      throw new Error('order no mismatch');
+    }
+
     // console.log('callback payment session', session);
 
     await handleCheckoutSuccess({
@@ -65,7 +74,7 @@ export async function GET(req: Request) {
       order.callbackUrl ||
       (order.paymentType === PaymentType.SUBSCRIPTION
         ? `${envConfigs.app_url}/settings/billing`
-        : `${envConfigs.app_url}/settings/payments`);
+        : `${envConfigs.app_url}/settings/payments?order_no=${orderNo}`);
   } catch (e: any) {
     console.log('checkout callback failed:', e);
     redirectUrl = `${envConfigs.app_url}/pricing`;
