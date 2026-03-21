@@ -30,6 +30,13 @@ export enum OrderStatus {
   FAILED = 'failed', // order paid, but failed
 }
 
+export type OrderPaidTransitionResult = {
+  order: Order | null;
+  subscription: typeof subscription.$inferSelect | null;
+  credit: typeof credit.$inferSelect | null;
+  transitionedToPaid: boolean;
+};
+
 /**
  * create order
  */
@@ -314,6 +321,101 @@ export async function updateOrderInTransaction({
   });
 
   return result;
+}
+
+export async function transitionOrderToPaidInTransaction({
+  orderNo,
+  updateOrder,
+  newSubscription,
+  newCredit,
+}: {
+  orderNo: string;
+  updateOrder: UpdateOrder;
+  newSubscription?: NewSubscription;
+  newCredit?: NewCredit;
+}): Promise<OrderPaidTransitionResult> {
+  if (!orderNo || !updateOrder) {
+    throw new Error('orderNo and updateOrder are required');
+  }
+
+  if (updateOrder.status !== OrderStatus.PAID) {
+    throw new Error('transitionOrderToPaidInTransaction only supports PAID');
+  }
+
+  return db().transaction(async (tx: any) => {
+    const [paidOrder] = await tx
+      .update(order)
+      .set(updateOrder)
+      .where(
+        and(
+          eq(order.orderNo, orderNo),
+          or(
+            eq(order.status, OrderStatus.CREATED),
+            eq(order.status, OrderStatus.PENDING)
+          )
+        )
+      )
+      .returning();
+
+    if (!paidOrder) {
+      return {
+        order: null,
+        subscription: null,
+        credit: null,
+        transitionedToPaid: false,
+      };
+    }
+
+    let createdSubscription: typeof subscription.$inferSelect | null = null;
+    if (newSubscription) {
+      const [existingSubscription] = await tx
+        .select()
+        .from(subscription)
+        .where(
+          and(
+            eq(subscription.subscriptionId, newSubscription.subscriptionId),
+            eq(subscription.paymentProvider, newSubscription.paymentProvider)
+          )
+        );
+
+      if (existingSubscription) {
+        createdSubscription = existingSubscription;
+      } else {
+        const [subscriptionResult] = await tx
+          .insert(subscription)
+          .values(newSubscription)
+          .returning();
+
+        createdSubscription = subscriptionResult;
+      }
+    }
+
+    let createdCredit: typeof credit.$inferSelect | null = null;
+    if (newCredit) {
+      const [existingCredit] = await tx
+        .select()
+        .from(credit)
+        .where(eq(credit.orderNo, orderNo));
+
+      if (existingCredit) {
+        createdCredit = existingCredit;
+      } else {
+        const [creditResult] = await tx
+          .insert(credit)
+          .values(newCredit)
+          .returning();
+
+        createdCredit = creditResult;
+      }
+    }
+
+    return {
+      order: paidOrder,
+      subscription: createdSubscription,
+      credit: createdCredit,
+      transitionedToPaid: true,
+    };
+  });
 }
 
 export async function updateSubscriptionInTransaction({

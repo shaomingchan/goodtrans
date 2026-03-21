@@ -24,9 +24,9 @@ import {
   NewOrder,
   Order,
   OrderStatus,
+  transitionOrderToPaidInTransaction,
   UpdateOrder,
   updateOrderByOrderNo,
-  updateOrderInTransaction,
   updateSubscriptionInTransaction,
 } from '../models/order';
 import {
@@ -134,18 +134,6 @@ export async function handleCheckoutSuccess({
     throw new Error('invalid order');
   }
 
-  // Idempotency check: if order is already paid, skip processing
-  if (order.status === OrderStatus.PAID) {
-    console.log(`Order ${orderNo} is already paid, skipping`);
-    return;
-  }
-
-  // Only process orders in CREATED or PENDING status
-  if (order.status !== OrderStatus.CREATED && order.status !== OrderStatus.PENDING) {
-    console.log(`Order ${orderNo} status is ${order.status}, not processing`);
-    return;
-  }
-
   if (order.paymentType === PaymentType.SUBSCRIPTION) {
     if (!session.subscriptionId || !session.subscriptionInfo) {
       throw new Error('subscription id or subscription info not found');
@@ -246,12 +234,18 @@ export async function handleCheckoutSuccess({
       };
     }
 
-    await updateOrderInTransaction({
+    const transitionResult = await transitionOrderToPaidInTransaction({
       orderNo,
       updateOrder,
       newSubscription,
       newCredit,
     });
+
+    if (!transitionResult.transitionedToPaid) {
+      console.log(
+        `Order ${orderNo} did not transition to paid, skipping entitlement grant`
+      );
+    }
   } else if (
     session.paymentStatus === PaymentStatus.FAILED ||
     session.paymentStatus === PaymentStatus.CANCELED
@@ -383,12 +377,18 @@ export async function handlePaymentSuccess({
       };
     }
 
-    await updateOrderInTransaction({
+    const transitionResult = await transitionOrderToPaidInTransaction({
       orderNo,
       updateOrder,
       newSubscription,
       newCredit,
     });
+
+    if (!transitionResult.transitionedToPaid) {
+      console.log(
+        `Order ${orderNo} did not transition to paid, skipping entitlement grant`
+      );
+    }
   } else {
     throw new Error('unknown payment status');
   }
