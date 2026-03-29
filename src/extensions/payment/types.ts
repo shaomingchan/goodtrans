@@ -199,6 +199,7 @@ export enum PaymentEventType {
   PAYMENT_SUCCESS = 'payment.success', // payment success
   PAYMENT_FAILED = 'payment.failed', // payment failed
   PAYMENT_REFUNDED = 'payment.refunded', // payment refunded
+  PAYMENT_INTENT_SUCCEEDED = 'payment_intent.success', // payment intent succeeded (Stripe)
   SUBSCRIBE_UPDATED = 'subscribe.updated', // subscription updated
   SUBSCRIBE_CANCELED = 'subscribe.canceled', // subscription canceled
 }

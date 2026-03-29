@@ -262,6 +262,10 @@ export class StripeProvider implements PaymentProvider {
         paymentSession = await this.buildPaymentSessionFromInvoice(
           event.data.object as Stripe.Response<Stripe.Invoice>
         );
+      } else if (eventType === PaymentEventType.PAYMENT_INTENT_SUCCEEDED) {
+        paymentSession = await this.buildPaymentSessionFromPaymentIntent(
+          event.data.object as Stripe.Response<Stripe.PaymentIntent>
+        );
       } else if (eventType === PaymentEventType.SUBSCRIBE_UPDATED) {
         paymentSession = await this.buildPaymentSessionFromSubscription(
           event.data.object as Stripe.Response<Stripe.Subscription>
@@ -364,6 +368,8 @@ export class StripeProvider implements PaymentProvider {
         return PaymentEventType.PAYMENT_SUCCESS;
       case 'invoice.payment_failed':
         return PaymentEventType.PAYMENT_FAILED;
+      case 'payment_intent.succeeded':
+        return PaymentEventType.PAYMENT_INTENT_SUCCEEDED;
       case 'customer.subscription.updated':
         return PaymentEventType.SUBSCRIBE_UPDATED;
       case 'customer.subscription.deleted':
@@ -600,6 +606,38 @@ export class StripeProvider implements PaymentProvider {
     }
 
     return subscriptionInfo;
+  }
+
+  // build payment session from payment intent (for payment_intent.succeeded event)
+  private async buildPaymentSessionFromPaymentIntent(
+    paymentIntent: Stripe.Response<Stripe.PaymentIntent>
+  ): Promise<PaymentSession> {
+    const result: PaymentSession = {
+      provider: this.name,
+      paymentStatus: PaymentStatus.SUCCESS,
+      paymentInfo: {
+        transactionId: paymentIntent.id,
+        discountCode: '',
+        discountAmount: 0,
+        discountCurrency: paymentIntent.currency || '',
+        paymentAmount: paymentIntent.amount_received,
+        paymentCurrency: paymentIntent.currency || '',
+        paymentEmail: '',
+        paymentUserName: '',
+        paymentUserId: paymentIntent.customer
+          ? (paymentIntent.customer as string)
+          : undefined,
+        paidAt: paymentIntent.created ? new Date(paymentIntent.created * 1000) : undefined,
+        invoiceId: paymentIntent.invoice
+          ? (paymentIntent.invoice as string)
+          : undefined,
+        invoiceUrl: '',
+      },
+      paymentResult: paymentIntent,
+      metadata: paymentIntent.metadata,
+    };
+
+    return result;
   }
 }
 

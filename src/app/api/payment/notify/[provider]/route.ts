@@ -72,6 +72,75 @@ export async function POST(
         order,
         session,
       });
+    } else if (eventType === PaymentEventType.PAYMENT_INTENT_SUCCEEDED) {
+      // Stripe payment_intent.succeeded event
+      // Idempotency check: skip if transaction already processed
+      const paymentIntentId = session.paymentInfo?.transactionId;
+      if (paymentIntentId) {
+        const existingOrder = await findOrderByTransactionId({
+          transactionId: paymentIntentId,
+          paymentProvider: provider,
+        });
+        if (existingOrder) {
+          console.log(
+            `payment_intent.succeeded: ${paymentIntentId} already processed, skipping`
+          );
+          return Response.json({ message: 'success' });
+        }
+      }
+
+      // Get order_no from payment_intent metadata
+      const orderNo = session.metadata?.order_no;
+      if (!orderNo) {
+        console.log(
+          'payment_intent.succeeded: order_no not found in metadata, skipping'
+        );
+        return Response.json({ message: 'success' });
+      }
+
+      const order = await findOrderByOrderNo(orderNo);
+      if (!order) {
+        throw new Error('order not found');
+      }
+
+      // Stripe API: update payment_intent metadata with order_no if not already set
+      // P0 fix: return 500 on failure so Stripe retries (idempotency key prevents duplicate writes)
+      const stripeProvider = paymentProvider as any;
+      if (stripeProvider?.client && paymentIntentId) {
+        const metadataHasOrderNo = session.metadata?.order_no;
+        if (!metadataHasOrderNo) {
+          try {
+            await stripeProvider.client.paymentIntents.update(
+              paymentIntentId,
+              { metadata: { order_no: orderNo } },
+              {
+                idempotencyKey: `update-metadata-${paymentIntentId}-${orderNo}`,
+              }
+            );
+            console.log(
+              `payment_intent.succeeded: wrote order_no ${orderNo} to payment_intent ${paymentIntentId}`
+            );
+          } catch (err: any) {
+            console.error(
+              `payment_intent.succeeded: failed to update payment_intent metadata`,
+              err
+            );
+            // P0: return 500 so Stripe retries instead of silent failure → permanent dead loop
+            return Response.json(
+              {
+                message: `metadata update failed: ${err.message}`,
+              },
+              { status: 500 }
+            );
+          }
+        }
+      }
+
+      // handleCheckoutSuccess has its own idempotency check (order.status === PAID)
+      await handleCheckoutSuccess({
+        order,
+        session,
+      });
     } else if (eventType === PaymentEventType.PAYMENT_SUCCESS) {
       // handle subscription payment or one-time payment
       if (session.subscriptionId && session.subscriptionInfo) {
