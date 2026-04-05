@@ -6,6 +6,7 @@ import { Upload, Languages } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -32,11 +33,17 @@ export default function TranslatePage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sourceText, setSourceText] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file || !email) {
-      setError("Please upload a file and enter your email");
+    if (!file && !sourceText.trim()) {
+      setError("Please upload a txt/md file or paste text to translate");
+      return;
+    }
+
+    if (!email) {
+      setError("Please enter your email");
       return;
     }
 
@@ -44,13 +51,57 @@ export default function TranslatePage() {
     setError("");
 
     try {
-      // TODO: Upload file to R2 and extract text
-      // TODO: Create translation task
-      const response = await fetch("/api/translate/create", {
+      let text = sourceText.trim();
+
+      if (file) {
+        const isTextFile = ["text/plain", "text/markdown", "text/x-markdown"].includes(file.type);
+        const isPdfFile = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+        const isSupportedTextExtension = /\.(txt|md)$/i.test(file.name);
+
+        if (isPdfFile) {
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", file);
+
+          const uploadResponse = await fetch("/api/storage/upload", {
+            method: "POST",
+            body: uploadFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error("Failed to upload PDF");
+          }
+
+          const uploadData = await uploadResponse.json();
+          const extractResponse = await fetch("/api/pdf/extract", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pdfUrl: uploadData.url }),
+          });
+
+          if (!extractResponse.ok) {
+            throw new Error("Failed to extract text from PDF");
+          }
+
+          const extractData = await extractResponse.json();
+          text = String(extractData.text || "").trim();
+        } else {
+          if (!isTextFile && !isSupportedTextExtension) {
+            throw new Error("Tonight's flow supports pasted text, .txt, .md, and .pdf files");
+          }
+
+          text = (await file.text()).trim();
+        }
+      }
+
+      if (!text) {
+        throw new Error("No text found to translate");
+      }
+
+      const response = await fetch("/api/translation/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: "placeholder", // TODO: extract from file
+          sourceText: text,
           sourceLang,
           targetLang,
           email,
@@ -60,7 +111,7 @@ export default function TranslatePage() {
       if (!response.ok) throw new Error("Failed to create translation task");
 
       const data = await response.json();
-      router.push(`/translate/status?taskId=${data.taskId}`);
+      router.push(`/${targetLang}/translate/status?taskId=${data.taskId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");
     } finally {
@@ -85,15 +136,26 @@ export default function TranslatePage() {
             <Input
               id="file"
               type="file"
-              accept=".pdf,.docx,.md,.txt"
+              accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
               className="flex-1"
             />
             <Upload className="size-5 text-muted-foreground" />
           </div>
           <p className="mt-1 text-xs text-muted-foreground">
-            Supports: PDF, Word, Markdown, Text
+            Tonight's runnable flow supports: pasted text, TXT, Markdown, and PDF
           </p>
+        </div>
+
+        <div>
+          <Label htmlFor="source-text">Or paste text</Label>
+          <Textarea
+            id="source-text"
+            placeholder="Paste the source text here"
+            value={sourceText}
+            onChange={(e) => setSourceText(e.target.value)}
+            className="mt-2 min-h-40"
+          />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

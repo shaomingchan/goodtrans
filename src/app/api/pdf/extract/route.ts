@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { uploadPDF } from '@/lib/storage/r2';
 
 /**
  * PDF Text Extraction API using MinerU
@@ -20,8 +21,11 @@ export async function POST(req: NextRequest) {
       if (!file) {
         return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
       }
-      // TODO: Upload to R2/S3 and get URL
-      return NextResponse.json({ error: 'File upload not implemented yet' }, { status: 501 });
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
+      }
+      const buffer = Buffer.from(await file.arrayBuffer());
+      pdfUrl = await uploadPDF(buffer, file.name);
     }
 
     if (!pdfUrl) {

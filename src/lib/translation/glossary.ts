@@ -2,10 +2,11 @@
  * Glossary extraction and management
  */
 
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const client = new OpenAI({
+  apiKey: process.env.AI_302_API_KEY || '',
+  baseURL: 'https://api.302.ai/v1',
 });
 
 export interface GlossaryTerm {
@@ -22,7 +23,7 @@ export async function extractTerms(
   sourceLang: string,
   targetLang: string
 ): Promise<GlossaryTerm[]> {
-  const response = await anthropic.messages.create({
+  const response = await client.chat.completions.create({
     model: 'claude-opus-4-20250514',
     max_tokens: 4096,
     messages: [
@@ -35,7 +36,7 @@ ${text.slice(0, 5000)}`,
     ],
   });
 
-  const content = response.content[0].type === 'text' ? response.content[0].text : '[]';
+  const content = response.choices[0]?.message?.content || '[]';
   try {
     return JSON.parse(content);
   } catch {

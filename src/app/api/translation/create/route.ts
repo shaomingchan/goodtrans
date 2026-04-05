@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     await db().insert(translationTask).values({
       id: taskId,
       userId: session.user.id,
-      email: session.user.email,
+      email: data.email,
       status: 'pending',
       sourceLang: data.sourceLang,
       targetLang: data.targetLang,
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         sourceText: data.sourceText,
         sourceLang: data.sourceLang,
         targetLang: data.targetLang,
-        email: session.user.email,
+        email: data.email,
       },
     });
 

@@ -11,6 +11,10 @@ import { db } from '@/core/db';
 import { translationTask } from '@/config/db/schema';
 import { eq } from 'drizzle-orm';
 
+async function updateTask(taskId: string, values: Partial<typeof translationTask.$inferInsert>) {
+  await db().update(translationTask).set(values).where(eq(translationTask.id, taskId));
+}
+
 export const translationWorkflow = inngest.createFunction(
   { id: 'translation-workflow', retries: 2 },
   { event: 'translation/start' },
@@ -18,50 +22,46 @@ export const translationWorkflow = inngest.createFunction(
     const { taskId, sourceText, sourceLang, targetLang, email } = event.data;
 
     try {
-      // Update status to processing
       await step.run('update-status-processing', async () => {
-        await db().update(translationTask)
-          .set({ status: 'processing', currentRound: 1 })
-          .where(eq(translationTask.id, taskId));
+        await updateTask(taskId, { status: 'processing', currentRound: 1, errorMessage: null });
       });
 
-      // Step 1: Extract glossary
       const terms = await step.run('extract-glossary', async () => {
-        await db().update(translationTask)
-          .set({ currentRound: 1 })
-          .where(eq(translationTask.id, taskId));
+        await updateTask(taskId, { currentRound: 1 });
         return await extractTerms(sourceText, sourceLang, targetLang);
       });
 
-      // Step 2-5: 5-round translation
       const result = await step.run('translate-5-rounds', async () => {
         const glossary = formatGlossary(terms);
-        return await translate5Rounds(sourceText, targetLang, glossary);
+        return await translate5Rounds(sourceText, targetLang, glossary, {
+          sourceLang,
+          onRoundChange: async (round) => {
+            await updateTask(taskId, {
+              currentRound: round,
+            });
+          },
+        });
       });
 
-      // Step 6: Upload to R2
       const fileUrl = await step.run('upload-result', async () => {
-        const markdown = result.segments.map(s => s.translated).join('\n\n');
+        await updateTask(taskId, { currentRound: 5 });
+        const markdown = result.segments.map((s) => s.translated).join('\n\n');
         return await uploadMarkdown(markdown, `${taskId}.md`);
       });
 
-      // Step 7: Update DB
       await step.run('update-db', async () => {
-        await db().update(translationTask)
-          .set({
-            status: 'completed',
-            translatedText: result.segments.map(s => s.translated).join('\n\n'),
-            currentRound: 5,
-            completedAt: new Date(),
-          })
-          .where(eq(translationTask.id, taskId));
+        await updateTask(taskId, {
+          status: 'completed',
+          translatedText: result.segments.map((s) => s.translated).join('\n\n'),
+          currentRound: 5,
+          completedAt: new Date(),
+        });
       });
 
-      // Step 8: Send email
       await step.run('send-email', async () => {
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: 'GoodTrans <noreply@goodtrans.ai>',
+          from: 'GoodTrans <noreply@animaker.dev>',
           to: email,
           subject: '✅ Your translation is ready',
           html: `<h2>Translation Completed</h2>
@@ -73,13 +73,10 @@ export const translationWorkflow = inngest.createFunction(
 
       return { taskId, status: 'completed', fileUrl };
     } catch (error) {
-      // Update status to failed
-      await db().update(translationTask)
-        .set({
-          status: 'failed',
-          errorMessage: error instanceof Error ? error.message : 'Unknown error',
-        })
-        .where(eq(translationTask.id, taskId));
+      await updateTask(taskId, {
+        status: 'failed',
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      });
 
       throw error;
     }
